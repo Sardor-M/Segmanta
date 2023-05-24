@@ -95,13 +95,32 @@ def main():
         if len(images) == 0:
             print("No names found in the specified folder")
             return 
-        for i, image in enumerate(images):
-            print(f"{i+1}. {image}")
-
+        for i, image_pth in enumerate(images):
+            print(f"{i+1}. {image_pth}")
+        image_choice = int(input("Enter your choice of number to annotate: "))
+        if image_choice > 1 or image_choice < len(images):
+            print('Invalid image choice')
+            return
+        image_pth = images[image_choice - 1]
+    elif choice == 2:
+        sample_images_folder = "./data/sample_images" 
+        sample_images = load_images_from_folder(sample_images_folder)
+        if len(sample_images) == 0:
+            print("No sample images found.")
+            return
+        for i, sample_image in enumerate(sample_images):
+            print(f"{i+1}. {sample_image}")
+        image_choice = int(input("Enter your sample mage number to annotate: "))
+        if image_choice < 1 or image_choice > len(sample_images):
+            print("Invalid sample image choice.")
+            return 
+        image_pth = sample_images[image_choice -1]
+    else:
+        print("Invalid choice.")
+        return 
         #  Here starts 
 
-    image_path ="./data/nature.jpg" 
-    annotations = annotate_image(image_path)
+    annotations = annotate_image(image_pth)
     save_annotated_images(annotations)
 ##
 if __name__ == "__main__":
