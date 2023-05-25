@@ -1,12 +1,18 @@
 import cv2
 import numpy as np
 import os
+import torch 
+import torchvision.transforms as transforms
+from PIL import Image
+from torchvision import models
+
 
 # Global variables
 drawing = False
 roi_points = []
 labels = []
 current_label = None
+model = None
 
 ## Mouse callback function
 def draw_roi(event, x, y, flags, param):
@@ -77,11 +83,41 @@ def annotate_image(image_path):
 # Save the labels
 print("Saving labels...")
 
+
+def label_roi_with_model(roi):
+    global model
+
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
+    roi_pil = Image.fromarray(cv2.cvtColor(roi,cv2.COLOR_BGR2RGB))
+    roi_tensor = transform(roi_pil)
+    roi_tensor = roi_tensor.unsqueeze(0)
+
+    with torch.no_grad():
+        model.eval()
+        output = model(roi_tensor)
+        predicted_mask = output.argmax(1).squeeze().detach().numpy()
+        mask = (predicted_mask > 0).astype(np.uint8) * 255
+
+    roi_masked = cv2.bitwise_and(roi, roi, mask=mask)
+
+    return roi_masked
+
+
 def save_annotated_images(annotations):
-    for i, (roi, label) in enumerate(labels):
+    for i, (roi, label) in enumerate(annotations):
         cv2.imwrite(f"annotated_image_{i}.jpg", roi)
         with open(f"annotation_{i}.txt", "w") as f:
             f.write(label)
+
+## Load pre-trained model 
+def load_pretrained_model():
+    global model
+    model = models.segmentation.deeplabv3_resnet50(pretrained=True)
+    model = model.eval()
 
 ## Main function 
 def main():
