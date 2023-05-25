@@ -72,8 +72,22 @@ def annotate_image(image_path):
                 cv2.imshow("ROI", roi)
                 cv2.waitKey(0)
                 current_label = None
-            elif key == ord('q'):
-                break
+
+        elif key == ord("e"):
+            if len(roi_points) == 2 and current_label:
+                roi = clone[roi_points[0][1]:roi_points[1][1], roi_points[0][0]:roi_points[1][0]]
+                labeled_roi = label_roi_with_model(roi)
+                cv2.imshow("ROI",labeled_roi)
+                cv2.waitKey(0)
+                user_correction = input("Enter the corrected label for the ROI: ")
+                if user_correction:
+                    labels.append((labeled_roi, user_correction))
+                else:
+                    labels.append((labeled_roi, current_label))
+                current_label = None
+        
+        elif key == ord('q'):
+            break
 
         # Close all the open windows
         cv2.destroyAllWindows()
@@ -83,7 +97,7 @@ def annotate_image(image_path):
 # Save the labels
 print("Saving labels...")
 
-
+## Label the ROI with the model
 def label_roi_with_model(roi):
     global model
 
@@ -103,7 +117,6 @@ def label_roi_with_model(roi):
         mask = (predicted_mask > 0).astype(np.uint8) * 255
 
     roi_masked = cv2.bitwise_and(roi, roi, mask=mask)
-
     return roi_masked
 
 
