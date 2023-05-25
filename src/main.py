@@ -13,6 +13,8 @@ roi_points = []
 labels = []
 current_label = None
 model = None
+gallery_images = []
+gallery_annotations = []
 
 ## Mouse callback function
 def draw_roi(event, x, y, flags, param):
@@ -36,7 +38,7 @@ def label_roi():
     label = input("Enter the label for the ROI (e.g., person, car or etc): ")
     current_label = label
 
-
+## Load images from the folder
 def load_images_from_folder(folder):
     images = []
     for filename in os.listdir(folder):
@@ -132,6 +134,46 @@ def save_annotated_images(annotations):
         with open(annotation_file_path, "w") as f:
             f.write(label)
 
+## Load gallery images
+def load_gallery_images():
+    global gallery_images, gallery_annotations
+
+    annotated_images_folder = "./data/annotated_images"
+    images = load_images_from_folder(annotated_images_folder)
+
+    for image_path in images:
+        image = cv2.imread(image_path)
+        annotation_file_path = image_path.replace(".jpg", ".txt")
+        with open(annotation_file_path, "r") as f:
+            annotation = f.read()
+        gallery_images.append(image)
+        gallery_annotations.append(annotation)
+
+## Browse gallery images
+def browse_gallery():
+    global gallery_images, gallery_annotations
+
+    if len(gallery_images) == 0:
+        print("No images found in the gallery")
+        return
+    while True:
+        for i, image in enumerate(gallery_images):
+            cv2.imshow(f"Image {i+1}", image)
+            print(f"{i+1}. {gallery_annotations[i]}")
+
+        key = cv2.waitKey(0) & 0xFF
+        cv2.destroyAllWindows()
+
+        if key == ord("q"):
+            break
+        elif key >= ord('1') and key <= ord(str(len(gallery_images))):
+            index = key - ord('1')
+            selected_image = gallery_images[index]
+            selected_annotation = gallery_annotations[index]
+            cv2.imshow("Selected image", selected_image)
+            print(f"Selected Annotation: {selected_annotation}")
+            key = cv2.waitKey(0) & 0xFF
+            cv2.destroyAllWindows()
 
 ## Load pre-trained model 
 def load_pretrained_model():
@@ -178,6 +220,10 @@ def main():
 
     annotations = annotate_image(image_pth)
     save_annotated_images(annotations)
+
+    load_gallery_images()
+    browse_gallery()
+
 ##
 if __name__ == "__main__":
     main()
