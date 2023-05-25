@@ -121,6 +121,16 @@ def label_roi_with_model(roi):
     roi_masked = cv2.bitwise_and(roi, roi, mask=mask)
     return roi_masked
 
+## Visualize masks
+def visualize_masks(image, annotations):
+    for (roi_masked, _), label in zip(annotations, annotations):
+        mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
+        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
+    
+    cv2.imshow("Mask Visualization", image)
+    cv2.waitKey(0)
+
 ## Save the annotated images
 def save_annotated_images(annotations):
     folder_name = "src/annotated_images"
@@ -220,6 +230,7 @@ def main():
 
     annotations = annotate_image(image_pth)
     save_annotated_images(annotations)
+    visualize_masks(cv2.imread(image_pth), annotations)
 
     load_gallery_images()
     browse_gallery()
