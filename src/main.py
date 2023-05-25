@@ -119,12 +119,19 @@ def label_roi_with_model(roi):
     roi_masked = cv2.bitwise_and(roi, roi, mask=mask)
     return roi_masked
 
-
+## Save the annotated images
 def save_annotated_images(annotations):
+    folder_name = "src/annotated_images"
+    os.makedirs(folder_name, exist_ok=True)
+
     for i, (roi, label) in enumerate(annotations):
-        cv2.imwrite(f"annotated_image_{i}.jpg", roi)
-        with open(f"annotation_{i}.txt", "w") as f:
+        annotated_image_path = os.path.join(folder_name, f"annotated_image_{i}.jpg")
+        cv2.imwrite(annotated_image_path, roi)
+
+        annotation_file_path = os.path.join(folder_name, f"annotation_{i}.txt")
+        with open(annotation_file_path, "w") as f:
             f.write(label)
+
 
 ## Load pre-trained model 
 def load_pretrained_model():
