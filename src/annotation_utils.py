@@ -87,16 +87,12 @@ def annotate_image(image_path):
     return labels
 
 def visualize_masks(image, annotations):
-    mask_image = np.zeros_like(image)
-
     for (roi_masked, _), in zip(annotations, annotations):
         mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(mask_image, contours, -1, (0, 255, 0), 2)
-
-    result = cv2.addWeighted(image, 0.7, mask_image, 0.3, 0)
+        cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
     
-    cv2.imshow("Mask Visualization", result)
+    cv2.imshow("Mask Visualization", image)
     cv2.waitKey(0)
 
 def save_annotated_images(annotations):

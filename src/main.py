@@ -5,24 +5,10 @@ from model_utils import load_pretrained_model
 from file_utils import load_images_from_folder
 
 def main():
-    print("1. Load images from local directory")
-    print("2. Load images from Google Drive")
-    choice = int(input("Enter your choice (1 or 2): "))
+    print("1. Load images from local directory:")
+    choice = int(input("Enter 1 to load image(s) from the directory: "))
 
     if choice == 1:
-        folder_path = input("Enter the path to the folder: ")
-        images = load_images_from_folder(folder_path)
-        if len(images) == 0:
-            print("No names found in the specified folder")
-            return 
-        for i, image_pth in enumerate(images):
-            print(f"{i+1}. {image_pth}")
-        image_choice = int(input("Enter your choice of number to annotate: "))
-        if image_choice > 1 or image_choice < len(images):
-            print('Invalid image choice')
-            return
-        image_pth = images[image_choice - 1]
-    elif choice == 2:
         sample_images_folder = "data/standard_test_images" 
         sample_images = load_images_from_folder(sample_images_folder)
         if len(sample_images) == 0:

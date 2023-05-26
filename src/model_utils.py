@@ -27,6 +27,7 @@ def label_roi_with_model(roi, model):
 
 ## Load the pretrained model
 def load_pretrained_model():
+    global model
     model = models.segmentation.deeplabv3_resnet50(pretrained=True)
     model = model.eval()
     return model
