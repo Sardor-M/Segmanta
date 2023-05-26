@@ -14,29 +14,14 @@ roi_points = []
 labels = []
 current_label = None
 current_drawing_mode = None
-model = None 
+model = None
 gallery_images = []
 gallery_annotations = []
 img = np.zeros((512, 512, 3), np.uint8)
 ix, iy, sx, sy = -1, -1, -1, -1
 
 
-## Mouse callback function
-def draw_roi(event, x, y, flags, param):
-    global drawing, roi_points
-    
-    if event == cv2.EVENT_LBUTTONDOWN:
-        drawing = True
-        roi_points = [(x, y)]
-
-    ## Check if the left mouse button was released
-    elif event == cv2.EVENT_LBUTTONUP:
-        drawing = False
-        roi_points.append((x, y))
-        cv2.rectangle(img, roi_points[0], roi_points[1], (0, 255, 0), 2)
-        cv2.imshow('Image', img)
-
-## Draw freehand
+# Draw freehand
 def draw_freehand(event, x, y, flags, param):
     global drawing, roi_points
 
@@ -50,7 +35,9 @@ def draw_freehand(event, x, y, flags, param):
         cv2.rectangle(img, roi_points[0], roi_points[1], (0, 255, 0), 2)
         cv2.imshow('Image', img)
 
-## Mouse callback function for polygonal drawing mode
+# Mouse callback function for polygonal drawing mode
+
+
 def draw_polygonal(event, x, y, flags, param):
     global drawing, roi_points, img, ix, iy, sx, sy
 
@@ -65,7 +52,8 @@ def draw_polygonal(event, x, y, flags, param):
         if drawing == True:
             drawing = False
             roi_points.append((x, y))
-            cv2.circle(img, (x, y), 6, (0, 0, 127), -1)  # Increase circle size to 6 pixels
+            # Increase circle size to 6 pixels
+            cv2.circle(img, (x, y), 6, (0, 0, 127), -1)
             cv2.line(img, (ix, iy), (x, y), (0, 255, 255), 2, cv2.LINE_AA)
 
     elif event == cv2.EVENT_LBUTTONDBLCLK:
@@ -78,53 +66,75 @@ def draw_polygonal(event, x, y, flags, param):
 
     cv2.imshow('Polygonal_Maker', img)
 
-    # Saving the image of polygonal ROI
-    def save_image():
-        folder = 'result_images'
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-        filename = os.path.join(folder, 'result_image.jpg')
-        cv2.imwrite(filename, img)
-        print(f"Image saved as {filename}")
-
     key = cv2.waitKey(1) & 0xFF
     if key == ord("s"):
         save_image()
     elif key == ord("q"):
         cv2.destroyAllWindows()
 
-    # Create a window and set mouse callback
-    cv2.namedWindow("Polygonal_Maker")
-    cv2.setMouseCallback("Polygonal_Maker", draw_polygonal)
 
-    while True:
-        cv2.imshow("Polygonal_Maker", img)
-        if cv2.waitKey(1) == 27:  # Press Esc key to exit
-            break
+# Saving the image of polygonal ROI
+def save_image():
+    folder = 'result_images'
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    filename = os.path.join(folder, 'result_image.jpg')
+    cv2.imwrite(filename, img)
+    print(f"Image saved as {filename}")
 
-    cv2.destroyAllWindows()
 
-## Label the ROI
+# Create a window and set mouse callback
+cv2.namedWindow("Polygonal_Maker")
+cv2.setMouseCallback("Simple_Polygonal_Test", draw_polygonal)
+
+while True:
+    cv2.imshow("Polygonal_Maker", img)
+    if cv2.waitKey(1) == 27:  # Press Esc key to exit
+        break
+
+cv2.destroyAllWindows()
+
+# Mouse callback for rectangular drawing mode
+
+
+def draw_roi(event, x, y, flags, param):
+    global drawing, roi_points
+
+    if event == cv2.EVENT_LBUTTONDOWN:
+        drawing = True
+        roi_points = [(x, y)]
+
+    # Check if the left mouse button was released
+    elif event == cv2.EVENT_LBUTTONUP:
+        drawing = False
+        roi_points.append((x, y))
+        cv2.rectangle(img, roi_points[0], roi_points[1], (0, 255, 0), 2)
+        cv2.imshow('Image', img)
+
+# Label the ROI
+
+
 def label_roi():
     global current_label
     label = input("Enter the label for the ROI (e.g., person, car or etc): ")
     current_label = label
 
+
 def annotate_image(image_path):
     global img, labels, drawing, current_label
-     
-    img =cv2.imread(image_path)
+
+    img = cv2.imread(image_path)
     clone = img.copy()
 
-    ## Create a window and set mouse callback
+    # Create a window and set mouse callback
     cv2.namedWindow("Image")
-    cv2.setMouseCallback("Image", draw_roi)
+    cv2.setMouseCallback("Draw Roi", draw_roi)
 
-    ## Reset the drawing and ROI points 
+    # Reset the drawing and ROI points
     drawing = False
     roi_points = []
-    
-    ## Loop until the 'q' key is pressed
+
+    # Loop until the 'q' key is pressed
     while True:
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
@@ -139,10 +149,11 @@ def annotate_image(image_path):
         elif key == ord("p"):
             current_drawing_mode = "polygonal"
             cv2.setMouseCallback("Image", draw_polygonal)
-        
+
         elif key == ord("a"):
             if len(roi_points) == 2 and current_label:
-                roi = clone[roi_points[0][1]:roi_points[1][1], roi_points[0][0]:roi_points[1][0]]
+                roi = clone[roi_points[0][1]:roi_points[1]
+                            [1], roi_points[0][0]:roi_points[1][0]]
                 if roi.shape[0] > 0 and roi.shape[1] > 0:
                     labels.append((roi, current_label))
                     cv2.imshow("ROI", roi)
@@ -153,46 +164,55 @@ def annotate_image(image_path):
             if len(roi_points) == 3 and current_label:
                 roi = clone.copy()
                 if current_drawing_mode == "freehand":
-                    cv2.fillPoly(roi, np.array([roi_points], dtype=np.int32), (0, 0, 0))
+                    cv2.fillPoly(roi, np.array(
+                        [roi_points], dtype=np.int32), (0, 0, 0))
                 elif current_drawing_mode == "polygonal":
-                    cv2.fillPoly(roi, np.array([roi_points], dtype=np.int32), (0, 0, 0))
+                    cv2.fillPoly(roi, np.array(
+                        [roi_points], dtype=np.int32), (0, 0, 0))
                 labeled_roi = label_roi_with_model(roi, model)
-                cv2.imshow("ROI",labeled_roi)
+                cv2.imshow("ROI", labeled_roi)
                 cv2.waitKey(0)
-                user_correction = input("Enter the corrected label for the ROI: ")
+                user_correction = input(
+                    "Enter the corrected label for the ROI: ")
                 if user_correction:
                     labels.append((labeled_roi, user_correction))
                 else:
                     labels.append((labeled_roi, current_label))
                 current_label = None
-        
+
         elif key == ord('q'):
             break
 
     cv2.destroyAllWindows()
     return labels
 
-## Masking Visualization wuth related mouse callback function
+# Masking Visualization wuth related mouse callback function
+
+
 def visualize_masks(image, annotations):
     for (roi_masked, _), in zip(annotations, annotations):
         mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
-        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+            mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
-    
+
     cv2.imshow("Mask Visualization", image)
     cv2.waitKey(0)
+
 
 def save_annotated_images(annotations):
     folder_name = "data/annotated_images"
     os.makedirs(folder_name, exist_ok=True)
 
     for i, (roi, label) in enumerate(annotations):
-        annotated_image_path = os.path.join(folder_name, f"annotated_image_{i}.jpg")
+        annotated_image_path = os.path.join(
+            folder_name, f"annotated_image_{i}.jpg")
         cv2.imwrite(annotated_image_path, roi)
 
         annotation_file_path = os.path.join(folder_name, f"annotation_{i}.txt")
         with open(annotation_file_path, "w") as f:
             f.write(label)
+
 
 def load_gallery_images():
     global gallery_images, gallery_annotations
@@ -207,6 +227,7 @@ def load_gallery_images():
             annotation = f.read()
         gallery_images.append(image)
         gallery_annotations.append(annotation)
+
 
 def browse_gallery():
     global gallery_images, gallery_annotations
