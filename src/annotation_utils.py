@@ -1,11 +1,21 @@
 import cv2
 import os
+import numpy as np
+import torch
+import torchvision.transforms as transforms
+from PIL import Image
+from torchvision import models
+from file_utils import load_images_from_folder
+from model_utils import label_roi_with_model
 
 # Global variables
 drawing = False
 roi_points = []
 labels = []
 current_label = None
+model = None 
+gallery_images = []
+gallery_annotations = []
 
 ## Mouse callback function
 def draw_roi(event, x, y, flags, param):
@@ -30,7 +40,7 @@ def label_roi():
     current_label = label
 
 def annotate_image(image_path):
-    global img, labels
+    global img, labels, current_label
      
     img =cv2.imread(image_path)
     clone = img.copy()
@@ -44,29 +54,31 @@ def annotate_image(image_path):
         cv2.imshow("Image", img)
         key = cv2.waitKey(1) & 0xFF
 
-        if key == ord("n"):
+        if key == ord("r"):
             label_roi()
         
-        elif key == ord("h"):
+        elif key == ord("a"):
             if len(roi_points) == 2 and current_label:
                 roi = clone[roi_points[0][1]:roi_points[1][1], roi_points[0][0]:roi_points[1][0]]
-                labels.append((roi, current_label))
-                cv2.imshow("ROI", roi)
-                cv2.waitKey(0)
-                current_label = None
+                if roi.shape[0] > 0 and roi.shape[1] > 0:
+                    labels.append((roi, current_label))
+                    cv2.imshow("ROI", roi)
+                    cv2.waitKey(0)
+                    current_label = None
 
-        elif key == ord("e"):
+        elif key == ord("l"):
             if len(roi_points) == 2 and current_label:
                 roi = clone[roi_points[0][1]:roi_points[1][1], roi_points[0][0]:roi_points[1][0]]
-                labeled_roi = label_roi_with_model(roi)
-                cv2.imshow("ROI",labeled_roi)
-                cv2.waitKey(0)
-                user_correction = input("Enter the corrected label for the ROI: ")
-                if user_correction:
-                    labels.append((labeled_roi, user_correction))
-                else:
-                    labels.append((labeled_roi, current_label))
-                current_label = None
+                if roi is not None and roi.shape[0] > 0 and roi.shape[1] > 0:
+                    labeled_roi = label_roi_with_model(roi, model)
+                    cv2.imshow("ROI",labeled_roi)
+                    cv2.waitKey(0)
+                    user_correction = input("Enter the corrected label for the ROI: ")
+                    if user_correction:
+                        labels.append((labeled_roi, user_correction))
+                    else:
+                        labels.append((labeled_roi, current_label))
+                    current_label = None
         
         elif key == ord('q'):
             break
@@ -75,12 +87,16 @@ def annotate_image(image_path):
     return labels
 
 def visualize_masks(image, annotations):
-    for (roi_masked, _), label in zip(annotations, annotations):
+    mask_image = np.zeros_like(image)
+
+    for (roi_masked, _), in zip(annotations, annotations):
         mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
+        cv2.drawContours(mask_image, contours, -1, (0, 255, 0), 2)
+
+    result = cv2.addWeighted(image, 0.7, mask_image, 0.3, 0)
     
-    cv2.imshow("Mask Visualization", image)
+    cv2.imshow("Mask Visualization", result)
     cv2.waitKey(0)
 
 def save_annotated_images(annotations):
