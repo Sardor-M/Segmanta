@@ -66,14 +66,9 @@ def draw_polygonal(event, x, y, flags, param):
 
     cv2.imshow('Polygonal_Maker', img)
 
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord("s"):
-        save_image()
-    elif key == ord("q"):
-        cv2.destroyAllWindows()
-
-
 # Saving the image of polygonal ROI
+
+
 def save_image():
     folder = 'result_images'
     if not os.path.exists(folder):
@@ -82,15 +77,22 @@ def save_image():
     cv2.imwrite(filename, img)
     print(f"Image saved as {filename}")
 
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("s"):
+        save_image()
+    elif key == ord("q"):
+        cv2.destroyAllWindows()
+
 
 # Create a window and set mouse callback
 cv2.namedWindow("Polygonal_Maker")
-cv2.setMouseCallback("Simple_Polygonal_Test", draw_polygonal)
+cv2.setMouseCallback("Polygonal_Maker", draw_polygonal)
 
 while True:
     cv2.imshow("Polygonal_Maker", img)
     if cv2.waitKey(1) == 27:  # Press Esc key to exit
         break
+
 
 cv2.destroyAllWindows()
 
