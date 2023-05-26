@@ -13,6 +13,7 @@ drawing = False
 roi_points = []
 labels = []
 current_label = None
+current_drawing_mode = None
 model = None 
 gallery_images = []
 gallery_annotations = []
@@ -32,7 +33,36 @@ def draw_roi(event, x, y, flags, param):
         cv2.rectangle(img, roi_points[0], roi_points[1], (0, 255, 0), 2)
         cv2.imshow('Image', img)
 
+## Draw freehand
+def draw_freehand(event, x, y, flags, param):
+    global drawing, roi_points
 
+    if event == cv2.EVENT_LBUTTONDOWN:
+        drawing = True
+        roi_points = [(x, y)]
+
+    elif event == cv2.EVENT_LBUTTONUP:
+        drawing = False
+        roi_points.append((x, y))
+        cv2.rectangle(img, roi_points[0], roi_points[1], (0, 255, 0), 2)
+        cv2.imshow('Image', img)
+
+## Mouse callback function for polygonal drawing mode
+def draw_polygonal(event, x, y, flags, param):
+    global drawing, roi_points
+
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if len(roi_points) > 0:
+            drawing = True
+        roi_points.append((x, y))
+
+    elif event == cv2.EVENT_LBUTTONUP:
+        if len(roi_points) >= 3:
+            drawing = False
+            cv2.fillPoly(img, np.array([roi_points], dtype=np.int32), (0, 255, 0))
+            cv2.polylines(img, np.array([roi_points], dtype=np.int32), True, (0, 255, 0), 2)
+            cv2.imshow('Image', img)
+    
 ## Label the ROI
 def label_roi():
     global current_label
@@ -40,7 +70,7 @@ def label_roi():
     current_label = label
 
 def annotate_image(image_path):
-    global img, labels, current_label
+    global img, labels, drawing, current_label
      
     img =cv2.imread(image_path)
     clone = img.copy()
@@ -48,6 +78,10 @@ def annotate_image(image_path):
     ## Create a window and set mouse callback
     cv2.namedWindow("Image")
     cv2.setMouseCallback("Image", draw_roi)
+
+    ## Reset the drawing and ROI points 
+    drawing = False
+    roi_points = []
     
     ## Loop until the 'q' key is pressed
     while True:
@@ -56,6 +90,14 @@ def annotate_image(image_path):
 
         if key == ord("r"):
             label_roi()
+
+        elif key == ord("f"):
+            current_drawing_mode = "freehand"
+            cv2.setMouseCallback("Image", draw_freehand)
+
+        elif key == ord("p"):
+            current_drawing_mode = "polygonal"
+            cv2.setMouseCallback("Image", draw_polygonal)
         
         elif key == ord("a"):
             if len(roi_points) == 2 and current_label:
@@ -67,18 +109,21 @@ def annotate_image(image_path):
                     current_label = None
 
         elif key == ord("l"):
-            if len(roi_points) == 2 and current_label:
-                roi = clone[roi_points[0][1]:roi_points[1][1], roi_points[0][0]:roi_points[1][0]]
-                if roi is not None and roi.shape[0] > 0 and roi.shape[1] > 0:
-                    labeled_roi = label_roi_with_model(roi, model)
-                    cv2.imshow("ROI",labeled_roi)
-                    cv2.waitKey(0)
-                    user_correction = input("Enter the corrected label for the ROI: ")
-                    if user_correction:
-                        labels.append((labeled_roi, user_correction))
-                    else:
-                        labels.append((labeled_roi, current_label))
-                    current_label = None
+            if len(roi_points) == 3 and current_label:
+                roi = clone.copy()
+                if current_drawing_mode == "freehand":
+                    cv2.fillPoly(roi, np.array([roi_points], dtype=np.int32), (0, 0, 0))
+                elif current_drawing_mode == "polygonal":
+                    cv2.fillPoly(roi, np.array([roi_points], dtype=np.int32), (0, 0, 0))
+                labeled_roi = label_roi_with_model(roi, model)
+                cv2.imshow("ROI",labeled_roi)
+                cv2.waitKey(0)
+                user_correction = input("Enter the corrected label for the ROI: ")
+                if user_correction:
+                    labels.append((labeled_roi, user_correction))
+                else:
+                    labels.append((labeled_roi, current_label))
+                current_label = None
         
         elif key == ord('q'):
             break
@@ -86,6 +131,7 @@ def annotate_image(image_path):
     cv2.destroyAllWindows()
     return labels
 
+## Masking Visualization wuth related mouse callback function
 def visualize_masks(image, annotations):
     for (roi_masked, _), in zip(annotations, annotations):
         mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
