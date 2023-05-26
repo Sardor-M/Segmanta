@@ -7,6 +7,7 @@ from PIL import Image
 from torchvision import models
 from file_utils import load_images_from_folder
 from model_utils import label_roi_with_model
+from model_utils import load_pretrained_model
 
 # Global variables
 drawing = False
@@ -66,9 +67,14 @@ def draw_polygonal(event, x, y, flags, param):
 
     cv2.imshow('Polygonal_Maker', img)
 
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("s"):
+        save_image()
+    elif key == ord("q"):
+        cv2.destroyAllWindows()
+
+
 # Saving the image of polygonal ROI
-
-
 def save_image():
     folder = 'result_images'
     if not os.path.exists(folder):
@@ -76,12 +82,6 @@ def save_image():
     filename = os.path.join(folder, 'result_image.jpg')
     cv2.imwrite(filename, img)
     print(f"Image saved as {filename}")
-
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord("s"):
-        save_image()
-    elif key == ord("q"):
-        cv2.destroyAllWindows()
 
 
 # Create a window and set mouse callback
@@ -93,8 +93,8 @@ while True:
     if cv2.waitKey(1) == 27:  # Press Esc key to exit
         break
 
-
 cv2.destroyAllWindows()
+
 
 # Mouse callback for rectangular drawing mode
 
@@ -190,7 +190,6 @@ def annotate_image(image_path):
 
 # Masking Visualization wuth related mouse callback function
 
-
 def visualize_masks(image, annotations):
     for (roi_masked, _), in zip(annotations, annotations):
         mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
@@ -251,7 +250,9 @@ def browse_gallery():
             index = key - ord('1')
             selected_image = gallery_images[index]
             selected_annotation = gallery_annotations[index]
+
             cv2.imshow("Selected image", selected_image)
             print(f"Selected Annotation: {selected_annotation}")
+
             key = cv2.waitKey(0) & 0xFF
             cv2.destroyAllWindows()

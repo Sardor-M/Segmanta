@@ -7,7 +7,6 @@ import numpy as np
 
 # Mouse callback function
 
-
 def label_roi_with_model(roi, model):
     transform = transforms.Compose([
         transforms.ToTensor(),
