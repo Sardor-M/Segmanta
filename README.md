@@ -8,7 +8,7 @@ This is Interactive Image Segmentation Tool that allows users to segment and ann
 
 The project is structured as follows:
 
-```bash
+```
 |───tests
 |   ├───test_annotation_utils.py
 |   ├───test_file_utils.py
@@ -85,7 +85,6 @@ python main.py
 - [Introduction to Semantic Image Segmentation](https://medium.com/analytics-vidhya/introduction-to-semantic-image-segmentation-856cda5e5de8)
 - [Image Segmentation using OpenCv](https://nayakpplaban.medium.com/image-segmentation-using-opencv-39013013920a)
 - [Semantic Segmentation](https://www.jeremyjordan.me/semantic-segmentation/)
-
 
 
 
