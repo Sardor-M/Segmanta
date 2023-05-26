@@ -100,25 +100,3 @@ python main.py
 ## 📝 License
 
 > This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-<!-- 
-```
-|───tests
-|   ├───test_annotation_utils.py
-|   ├───test_file_utils.py
-|   └───test_model_utils.py
-├───.gitignore
-├───src
-│   ├───__pycache__
-│   └───data 
-│       ├───annotated_images
-│       └───standard_test_images
-|   └───prev_source_code_folder
-│       └───main_prev.py
-│   ├───annotation_utils.py
-│   ├───file_utils.py
-│   ├───main.py
-│   └───model_utils.py
-├───LICENSE.md
-└───README.md
-``` -->
