@@ -8,18 +8,18 @@
 
 ## 📌 Table of Contents
 
-- [📌 Table of Contents](#-table-of-contents)
-- [📝 Project Description](#-project-description)
-- [🏗️ Project Structure](#️-project-structure)
-- [🔐 Features](#-features)
-- [📦 Dependencies](#-dependencies)
-- [📜 Usage](#-usage)
+- [Table of Contents](#-table-of-contents)
+- [Project Description](#-project-description)
+- [Project Structure](#️-project-structure)
+- [Features](#-features)
+- [Dependencies](#-dependencies)
+- [Usage](#-usage)
   - [Installation :](#installation-)
   - [Running the Program :](#running-the-program-)
-- [📚 References](#-references)
-- [📌 TODO](#-todo)
-- [📝 License](#-license)
-- [📌 Contact](#-contact)
+- [References](#-references)
+- [TODO](#-todo)
+- [License](#-license)
+- [Contact](#-contact)
 
 ## 📝 Project Description
 
