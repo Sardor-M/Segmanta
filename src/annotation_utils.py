@@ -17,6 +17,9 @@ current_drawing_mode = None
 model = None 
 gallery_images = []
 gallery_annotations = []
+img = np.zeros((512, 512, 3), np.uint8)
+ix, iy, sx, sy = -1, -1, -1, -1
+
 
 ## Mouse callback function
 def draw_roi(event, x, y, flags, param):
@@ -49,20 +52,58 @@ def draw_freehand(event, x, y, flags, param):
 
 ## Mouse callback function for polygonal drawing mode
 def draw_polygonal(event, x, y, flags, param):
-    global drawing, roi_points
+    global drawing, roi_points, img, ix, iy, sx, sy
 
     if event == cv2.EVENT_LBUTTONDOWN:
-        if len(roi_points) > 0:
+        if drawing == False:
             drawing = True
+            roi_points = []
         roi_points.append((x, y))
+        ix, iy = x, y
 
     elif event == cv2.EVENT_LBUTTONUP:
-        if len(roi_points) >= 3:
+        if drawing == True:
             drawing = False
-            cv2.fillPoly(img, np.array([roi_points], dtype=np.int32), (0, 255, 0))
-            cv2.polylines(img, np.array([roi_points], dtype=np.int32), True, (0, 255, 0), 2)
-            cv2.imshow('Image', img)
-    
+            roi_points.append((x, y))
+            cv2.circle(img, (x, y), 6, (0, 0, 127), -1)  # Increase circle size to 6 pixels
+            cv2.line(img, (ix, iy), (x, y), (0, 255, 255), 2, cv2.LINE_AA)
+
+    elif event == cv2.EVENT_LBUTTONDBLCLK:
+        if drawing == True:
+            drawing = False
+            cv2.fillPoly(img, [np.array(roi_points)], (0, 255, 0))
+            cv2.polylines(img, [np.array(roi_points)], True, (0, 255, 0), 2)
+            for i in range(len(roi_points) - 1):
+                cv2.line(img, roi_points[i], roi_points[i + 1], (0, 0, 255), 2)
+
+    cv2.imshow('Polygonal_Maker', img)
+
+    # Saving the image of polygonal ROI
+    def save_image():
+        folder = 'result_images'
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        filename = os.path.join(folder, 'result_image.jpg')
+        cv2.imwrite(filename, img)
+        print(f"Image saved as {filename}")
+
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("s"):
+        save_image()
+    elif key == ord("q"):
+        cv2.destroyAllWindows()
+
+    # Create a window and set mouse callback
+    cv2.namedWindow("Polygonal_Maker")
+    cv2.setMouseCallback("Polygonal_Maker", draw_polygonal)
+
+    while True:
+        cv2.imshow("Polygonal_Maker", img)
+        if cv2.waitKey(1) == 27:  # Press Esc key to exit
+            break
+
+    cv2.destroyAllWindows()
+
 ## Label the ROI
 def label_roi():
     global current_label
