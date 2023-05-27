@@ -129,9 +129,11 @@ The following dependencies are required to run the program:
 
 ## 📷 Result Examples:
 
-### Freehand Drawing Mode: 
+### Saved Output Images:
 
-|   Freehand Drawing Mode     |          Polygon Selection Drawing Mode          |
+> These are the result outputs of the **Freehand Drawing Mode** and **Polygonal Selection Drawing** modes example case: 
+
+|   Freehand Drawing Mode     |          Polygonal Selection Drawing Mode          |
 | :-----------------: | :---------------------------------------: |
 | ![](src/result_images/result_image_1.jpg) | ![](src/result_images/result_image_2.jpg) |
 
