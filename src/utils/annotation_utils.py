@@ -190,6 +190,7 @@ def annotate_image(image_path):
 
 # Masking Visualization wuth related mouse callback function
 
+
 def visualize_masks(image, annotations):
     for (roi_masked, _), in zip(annotations, annotations):
         mask = cv2.cv2Color(roi_masked, cv2.COLOR_BGR2GRAY)
@@ -246,7 +247,7 @@ def browse_gallery():
 
         if key == ord("q"):
             break
-        elif key >= ord('1') and key <= ord(str(len(gallery_images) + ord("O"))):
+        elif key >= ord('1') and key <= ord(str(len(gallery_images) + ord('O'))):
             index = key - ord('1')
             selected_image = gallery_images[index]
             selected_annotation = gallery_annotations[index]

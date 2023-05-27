@@ -110,6 +110,9 @@ python main.py
   - **This has to be fixed, not working as expected**
 - [x] **View Annotated Imaages in Gallery View**
   - **This feature is implemented, but needs more work and improvement**
+- [x] **Manual Mask Visualization Mode**
+  - **This feature is implemented, but needs improvement and work.**
+  - **Also needs to update the functionality  that enable manual mouse masking method**
 - [x] **Save Annotated Images to Local Machine**
 
 ## 📦 Dependencies
@@ -124,27 +127,34 @@ The following dependencies are required to run the program:
 - [Torchvision 0.8.2](https://pypi.org/project/torchvision/)
 - [Transformers 4.3.3](https://pypi.org/project/transformers/)
 
-## 📷 Result Examples
+## 📷 Result Examples:
 
-### Freehand Drawing
+### Freehand Drawing Mode: 
 
-![Freehand Drawing]()
+|   Freehand Drawing Mode     |          Polygon Selection Drawing Mode          |
+| :-----------------: | :---------------------------------------: |
+| ![](src/result_images/result_image_1.jpg) | ![](src/result_images/result_image_2.jpg) |
 
-### Polygon Selection
+### 📝 Note:
 
-![Polygon Selection]()
+> The following modes functionality use case result examples are not presented. Those are 
+  -  **Recatanlge Selection Mode** 
+  - **Edit the label for ROI**
+  - **Label the ROI functionality**
+  - **Manual Mask Vizualization Mode** 
+> These functionalities are not working as expected and needs more work and time, when i get the chance, i will fix them and update the result examples in the further commits.
 
-### Rectangle Selection
+### Polygon Selection Drawing Mode on Empty Sheet:
 
-![Rectangle Selection]()
+- **As you run the project on your local machine, you can also see and play around with the **Simple Polygonal Drawing Window** on a new window, not on the surface of the image.**
 
-### ROI Definition
+ This is demonstration of the **Polygonal Drawing on Empty Window**:
 
-![ROI Definition]()
+ |   Polygonal Drawing on Empty Sheet    |         [Result] Polygonal Drawing on Empty Sheet         |
+| :-----------------: | :---------------------------------------: |
+| ![](src/result_images/simple_polygonal_maker.png) | ![](src/result_images/simple_polygonal_maker_after.png) |
 
-### Semantic Label Assignment
 
-![Semantic Label Assignment]()
 
 ## 📚 References
 
@@ -178,8 +188,11 @@ The following dependencies are required to run the program:
 
 > This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## 📌 Contact
+## ✉️ Contact
 
 > Feel free to contribute, fork or star or if you have any questions or suggestions please contact me.
 >
 > - **sardor0968@gmail.com**
+
+
+
