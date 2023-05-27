@@ -9,32 +9,27 @@
 ## 📌 Table of Contents
 
 - [Table of Contents](#-table-of-contents)
-- [Project Description](#-project-description)
 - [Project Structure](#️-project-structure)
+- [Project Description](#-project-description)
+- [How to Use the Tool - Usage](#-how-to-use-the-tool---usage)
 - [Features](#-features)
 - [Dependencies](#-dependencies)
-- [Usage](#-usage)
-  - [Installation :](#installation-)
-  - [Running the Program :](#running-the-program-)
+- [Result Examples](#-result-examples)
 - [References](#-references)
-- [TODO](#-todo)
+- [To-Do](#-to-do)
 - [License](#-license)
 - [Contact](#-contact)
-
-## 📝 Project Description
-
-This is an Interactive Image Segmentation Tool that allows users to segment and annotate objects in images based on their semantic measurments. This tool is built using OpenCV and Python. Using this tool, users can segment images using freehand drawing, polygon selection, and rectangle selection. And then, users can assign semantic labels to the regions of interest (ROI) that they have defined. Also users can view annotated images in gallery view and save them to their local machine.
 
 ## 🏗️ Project Structure
 
 The project is structured as follows:
 
 ```
+|───.vscode
 |───tests
-|   ├───test_annotation_utils.py
-|   ├───test_file_utils.py
-|   └───test_model_utils.py
-├───.gitignore
+|   ├───test_annotation.py
+|   ├───test_file.py
+|   └───test_model.py
 ├───src
 │   ├───__pycache__
 │   └───data
@@ -43,19 +38,69 @@ The project is structured as follows:
 |   └───prev_source_code_folder
 │       └───main_prev.py
 |   └───result_images
-│   ├───annotation_utils.py
-│   ├───file_utils.py
-│   ├───main.py
-│   └───model_utils.py
+|   └───utils
+│       ├───annotation_utils.py
+│       ├───file_utils.py
+│       └───model_utils.py
+│   └───main.py
+├───.gitignore
 ├───LICENSE.md
-└───README.md
+├───README.md
+└───requirements.txt
 ```
+
+## 📝 Project Description
+
+This is an Interactive Image Segmentation Tool that allows users to segment and annotate objects in images based on their semantic measurments. This tool is built using OpenCV and Python. Using this tool, users can segment images using freehand drawing, polygon selection, and rectangle selection. And then, users can assign semantic labels to the regions of interest (ROI) that they have defined. Once your run the project, you will be able to seelect an image from your saple images directory and segment it using one of the three methods mentioned above. As you segment the image using one of the methods, you will be able to see the results in window view of OpenCV. Also users can view annotated images in gallery view and save them to their local machine. The tool also allows users to annotate images using pretrained models. **The tool is being built using OpenCV and Python** and is still under development.
+
+## 📌 How to Use the Tool - Usage
+
+1. Clone the repository to your local machine using the following command:
+
+```bash
+git clone https://github.com/Sardor-M/Segmanta.git
+```
+
+2. Install all the dependencies using the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the program using the following command:
+
+```bash
+cd src
+python main.py
+```
+
+4. Once you run the program, you will be able to see the pop-up asks you to enter **1** and choose the sample image that you want to segment.
+
+- **Note that you can add your own images to the sample images directory and segment them using the tool.**
+
+5. Once you choose the image, you will be able to see the pop-up asks you to enter **2** and choose the method that you want to use to segment the image.
+
+- **Note that you can segment the image using one of the three methods:**
+  - **Freehand Drawing Mode**
+  - **Polygon Selection Drawing Mode**
+  - **Rectangle Selection Mode**
+
+#### Below are the command input characters that you can use to switch between the modes and do some other operations:
+
+| Modes                               | Cmd   |
+| ----------------------------------- | ----- |
+| Freehand Drawing Mode               | **f** |
+| Polygon Selection Drawing Mode      | **p** |
+| Save Segmented Image Cmd            | **s** |
+| <del>Rectangle Selection Mode</del> | **r** |
+| <del>Edit the label for ROI</del>   | **l** |
+| View Gallery Mode                   | **q** |
+| Exit Program Cmd                    | **e** |
 
 ##
 
 ## 🔐 Features:
 
-- [x] **Interactive Image Segmentation**
 - [x] **Freehand Drawing**
 - [x] **Polygon Selection Drawing**
 - [x] <del> Rectangle Selection </del>
@@ -68,6 +113,8 @@ The project is structured as follows:
 - [x] **Save Annotated Images to Local Machine**
 
 ## 📦 Dependencies
+
+The following dependencies are required to run the program:
 
 - [Python 3.8.5](https://www.python.org/downloads/release/python-385/)
 - [OpenCV 4.5.1](https://opencv.org/)
@@ -98,21 +145,6 @@ The project is structured as follows:
 ### Semantic Label Assignment
 
 ![Semantic Label Assignment]()
-
-## 📜 Usage
-
-### Installation :
-
-```bash
-git clone https://github.com/Sardor-M/Segmanta.git
-```
-
-### Running the Program :
-
-```bash
-cd src
-python main.py
-```
 
 ## 📚 References
 
