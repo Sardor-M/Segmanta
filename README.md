@@ -1,4 +1,4 @@
-<img align="left" width="60" height="60" src="src/other_images/size.png" alt="Image Segmentation Tool">
+<img align="left" width="60" height="60" src="src/other_images/crop.png" alt="Image Segmentation Tool">
 
 # Segmanta
 
