@@ -1,8 +1,8 @@
 import cv2
 import os
-from annotation_utils import annotate_image, visualize_masks, save_annotated_images, load_gallery_images, browse_gallery
-from model_utils import load_pretrained_model
-from file_utils import load_images_from_folder
+from utils.annotation_utils import annotate_image, visualize_masks, save_annotated_images, load_gallery_images, browse_gallery
+from utils.model_utils import load_pretrained_model
+from utils.file_utils import load_images_from_folder
 
 
 def main():

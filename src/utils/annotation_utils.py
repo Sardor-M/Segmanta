@@ -5,9 +5,9 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 from torchvision import models
-from file_utils import load_images_from_folder
-from model_utils import label_roi_with_model
-from model_utils import load_pretrained_model
+from utils.file_utils import load_images_from_folder
+from utils.model_utils import label_roi_with_model
+from utils.model_utils import load_pretrained_model
 
 # Global variables
 drawing = False

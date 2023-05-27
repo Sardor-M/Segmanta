@@ -1,1 +1,5 @@
-/Users/steve/Desktop/Classes/Spring Semester - 2023/Computer Vision /Project /Final Project/src/__pycache__
+ /Users/steve/Desktop/Classes/Spring Semester - 2023/Computer Vision /Project /Final Project/src/__pycache__
+
+# Editor directories and files
+.vscode/settings.json
+.DS_Store
