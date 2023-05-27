@@ -147,7 +147,8 @@ The following dependencies are required to run the program:
 - **Edit the label for ROI**
 - **Label the ROI functionality**
 - **Manual Mask Vizualization Mode**
-  > These functionalities are not working as expected and needs more work and time, when i get the chance, i will fix them and update the result examples in the further commits.
+
+> These functionalities are not working as expected and needs more work and time, when i get the chance, i will fix them and update the result examples in the further commits.
 
 ### Polygon Selection Drawing Mode on Empty Sheet:
 
