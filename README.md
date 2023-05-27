@@ -1,3 +1,5 @@
+<img align="left" width="80" height="80" src="src/other_images/size.png" alt="Image Segmentation Tool">
+
 # Segmanta
 
 [![GitHub  ](https://img.shields.io/github/license/Sardor-M/Segmanta)](github)
@@ -112,7 +114,7 @@ python main.py
   - **This feature is implemented, but needs more work and improvement**
 - [x] **Manual Mask Visualization Mode**
   - **This feature is implemented, but needs improvement and work.**
-  - **Also needs to update the functionality  that enable manual mouse masking method**
+  - **Also needs to update the functionality that enable manual mouse masking method**
 - [x] **Save Annotated Images to Local Machine**
 
 ## 📦 Dependencies
@@ -131,32 +133,31 @@ The following dependencies are required to run the program:
 
 ### Saved Output Images:
 
-> These are the result outputs of the **Freehand Drawing Mode** and **Polygonal Selection Drawing** modes example case: 
+> These are the result outputs of the **Freehand Drawing Mode** and **Polygonal Selection Drawing** modes example case:
 
-|   Freehand Drawing Mode     |          Polygonal Selection Drawing Mode          |
-| :-----------------: | :---------------------------------------: |
+|           Freehand Drawing Mode           |     Polygonal Selection Drawing Mode      |
+| :---------------------------------------: | :---------------------------------------: |
 | ![](src/result_images/result_image_1.jpg) | ![](src/result_images/result_image_2.jpg) |
 
 ### 📝 Note:
 
-> The following modes functionality use case result examples are not presented. Those are 
-  -  **Recatanlge Selection Mode** 
-  - **Edit the label for ROI**
-  - **Label the ROI functionality**
-  - **Manual Mask Vizualization Mode** 
-> These functionalities are not working as expected and needs more work and time, when i get the chance, i will fix them and update the result examples in the further commits.
+> The following modes functionality use case result examples are not presented. Those are
+
+- **Recatanlge Selection Mode**
+- **Edit the label for ROI**
+- **Label the ROI functionality**
+- **Manual Mask Vizualization Mode**
+  > These functionalities are not working as expected and needs more work and time, when i get the chance, i will fix them and update the result examples in the further commits.
 
 ### Polygon Selection Drawing Mode on Empty Sheet:
 
 - **As you run the project on your local machine, you can also see and play around with the **Simple Polygonal Drawing Window** on a new window, not on the surface of the image.**
 
- This is demonstration of the **Polygonal Drawing on Empty Window**:
+This is demonstration of the **Polygonal Drawing on Empty Window**:
 
- |   Polygonal Drawing on Empty Sheet    |         [Result] Polygonal Drawing on Empty Sheet         |
-| :-----------------: | :---------------------------------------: |
+|         Polygonal Drawing on Empty Sheet          |        [Result] Polygonal Drawing on Empty Sheet        |
+| :-----------------------------------------------: | :-----------------------------------------------------: |
 | ![](src/result_images/simple_polygonal_maker.png) | ![](src/result_images/simple_polygonal_maker_after.png) |
-
-
 
 ## 📚 References
 
@@ -195,6 +196,3 @@ The following dependencies are required to run the program:
 > Feel free to contribute, fork or star or if you have any questions or suggestions please contact me.
 >
 > - **sardor0968@gmail.com**
-
-
-
